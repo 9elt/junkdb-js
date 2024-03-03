@@ -1,6 +1,6 @@
 {
     "name": "@9elt/junkdb",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "A wrapper around junkdb client",
     "main": "./dist/cjs/index.js",
     "types": "./dist/cjs/index.d.ts",
@@ -8,7 +8,7 @@
     "scripts": {
         "dev": "tsc --watch",
         "build": "rm -rf dist/* && tsc && npm run test",
-        "pub": "npm run build npm publish",
+        "pub": "npm run build && mv README README.md && npm publish; mv README.md README",
         "test": "bun test.js"
     },
     "author": "Lorenzo Cicuttin",
