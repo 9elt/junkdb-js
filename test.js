@@ -2,6 +2,9 @@ import JunkDB from '.';
 
 const db = new JunkDB('js-wrapper-test', '~/projects/junkdb/client/bin');
 
+await db.set('...');
+await db.remove('unique-test');
+
 const TESTS = [
     await db.is('unique-test'),
     await db.set('unique-test'),
