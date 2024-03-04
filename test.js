@@ -1,6 +1,6 @@
 import JunkDB from '.';
 
-const db = new JunkDB('js-wrapper-test', '~/projects/junkdb/client/bin');
+const db = new JunkDB('js-wrapper-test');
 
 await db.set('...');
 await db.remove('some-data');

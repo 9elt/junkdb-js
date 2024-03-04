@@ -11,7 +11,7 @@ export default class JunkDB {
      * @private
      */
     dbname;
-    constructor(dbname, executable = '/bin/junkdb-client') {
+    constructor(dbname, executable = '~/.junkdb/junkdb-client') {
         this.executable = executable;
         this.dbname = dbname;
     }
