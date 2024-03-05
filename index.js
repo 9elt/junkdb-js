@@ -1,83 +1,69 @@
 import { exec } from "node:child_process";
 
-const run = (cmd) => new Promise(r => exec(cmd, (_, sout) => r(sout && sout.trim() || "")));
+const run = (cmd) => new Promise(r => exec(cmd, (_, sout) => r(sout && sout.trim() || "ERR no output")));
 
 export default class JunkDB {
     /**
      * @private
      */
-    executable;
+    bin;
     /**
      * @private
      */
     dbname;
     constructor(dbname, executable = '~/.junkdb/junkdb-client') {
-        this.executable = executable;
+        this.bin = executable;
         this.dbname = dbname;
     }
     /**
      * @private
      */
     async run(cmd) {
-        const res = await run(`${this.executable} '${this.dbname} ${cmd}'`);
+        const res = await run(`${this.bin} '${this.dbname} ${cmd.replace(/'/g, "\\'")}'`);
 
-        switch (res) {
-            case '0': return false;
+        const payload = res.replace(/^OK|ERR/, '').trim();
 
-            case '1': return true;
+        if (/^ERR/.test(res))
+            throw new Error(payload);
 
-            case '2': return 'ok';
+        if (/^\d+$/.test(payload))
+            return parseInt(payload);
 
-            case '-1':
-                console.error('Error: Unknown action,', cmd);
-                break;
+        if (/^true|false$/.test(payload))
+            return payload === 'true';
 
-            case '-2':
-                console.error('Error: Unreachable database,', cmd);
-                break;
-
-            case '-3':
-                console.error('Error: Server error,', cmd);
-                break;
-
-            default:
-                console.error('Error: Unknown error,', cmd);
-                break;
-        }
-
-        return null;
+        return payload;
     }
     /**
-     * @param {string | number} id
-     * @returns {Promise<boolean | null>}
+     * @returns {Promise<number>}
      */
-    async is(id) {
-        return await this.run(`IS ${id}`);
+    async get() {
+        return await this.run('GET');
     }
     /**
-     * @param {string | number} id
-     * @returns {Promise<'ok' | null>}
+     * @param {number} id
+     * @returns {Promise<'ok'>}
      */
     async set(id) {
         return await this.run(`SET ${id}`);
     }
     /**
      * @param {string | number} id
-     * @returns {Promise<boolean | null>}
+     * @returns {Promise<boolean>}
      */
     async has(id) {
         return await this.run(`HAS ${id}`);
     }
     /**
      * @param {string | number} id
-     * @returns {Promise<'ok' | null>}
+     * @returns {Promise<'ok'>}
      */
     async add(id) {
         return await this.run(`ADD ${id}`);
     }
     /**
      * @param {string | number} id
-     * @returns {Promise<'ok' | null>}
+     * @returns {Promise<'ok'>}
      */
     async remove(id) {
         return await this.run(`REM ${id}`);
