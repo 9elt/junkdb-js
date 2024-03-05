@@ -3,21 +3,15 @@ import { exec } from "node:child_process";
 const run = (cmd) => new Promise(r => exec(cmd, (_, sout) => r(sout && sout.trim() || "ERR no output")));
 
 export default class JunkDB {
-    /**
-     * @private
-     */
+    /** @private */
     bin;
-    /**
-     * @private
-     */
+    /** @private */
     dbname;
     constructor(dbname, executable = '~/.junkdb/junkdb-client') {
         this.bin = executable;
         this.dbname = dbname;
     }
-    /**
-     * @private
-     */
+    /** @private */
     async run(cmd) {
         const res = await run(`${this.bin} '${this.dbname} ${cmd.replace(/'/g, "\\'")}'`);
 
@@ -42,10 +36,10 @@ export default class JunkDB {
     }
     /**
      * @param {number} id
-     * @returns {Promise<'ok'>}
+     * @returns {Promise<void>}
      */
     async set(id) {
-        return await this.run(`SET ${id}`);
+        await this.run(`SET ${id}`);
     }
     /**
      * @param {string | number} id
@@ -56,16 +50,16 @@ export default class JunkDB {
     }
     /**
      * @param {string | number} id
-     * @returns {Promise<'ok'>}
+     * @returns {Promise<void>}
      */
     async add(id) {
-        return await this.run(`ADD ${id}`);
+        await this.run(`ADD ${id}`);
     }
     /**
      * @param {string | number} id
-     * @returns {Promise<'ok'>}
+     * @returns {Promise<void>}
      */
     async remove(id) {
-        return await this.run(`REM ${id}`);
+        await this.run(`REM ${id}`);
     }
 }

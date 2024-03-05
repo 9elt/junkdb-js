@@ -19,10 +19,10 @@ let failed = 0;
 console.log(TESTS);
 
 TESTS[0] === 0 || failed++ && log(0, TESTS[0]);
-TESTS[1] === '' || failed++ && log('', TESTS[1]);
+TESTS[1] === undefined || failed++ && log('undefined', TESTS[1]);
 TESTS[2] === 123 || failed++ && log(123, TESTS[2]);
 TESTS[3] === false || failed++ && log(false, TESTS[3]);
-TESTS[4] === '' || failed++ && log('', TESTS[4]);
+TESTS[4] === undefined || failed++ && log('undefined', TESTS[4]);
 TESTS[5] === true || failed++ && log(true, TESTS[5]);
 
 if (failed) {
