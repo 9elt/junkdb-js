@@ -13,7 +13,7 @@ export default class JunkDB {
     }
     /** @private */
     async run(cmd) {
-        const res = await run(`${this.bin} '${this.dbname} ${cmd.replace(/'/g, "\\'")}'`);
+        const res = await run(`${this.bin} '${this.dbname} ${cmd.replace(/'/g, '.')}'`);
 
         const payload = res.replace(/^OK|ERR/, '').trim();
 
