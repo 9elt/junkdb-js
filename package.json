@@ -1,6 +1,6 @@
 {
     "name": "@9elt/junkdb",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "A wrapper around junkdb client",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",

@@ -1,23 +1,32 @@
 import { exec } from "node:child_process";
 
-const run = (cmd) => new Promise(r => exec(cmd, (_, sout) => r(sout && sout.trim() || "ERR no output")));
+const run = (cmd) => new Promise(
+    resolve => exec(cmd, (_, stdout) => resolve(
+        stdout && stdout.trim() || "ERR no output"
+    ))
+);
 
 export default class JunkDB {
     /** @private */
     bin;
     /** @private */
     dbname;
-    constructor(dbname, executable = '~/.junkdb/junkdb-client') {
-        this.bin = executable;
+    /**
+     * @param {string | number} dbname
+     * @param {string | undefined} bin
+     */
+    constructor(dbname, bin = '~/.junkdb/junkdb-client') {
+        this.bin = bin;
         this.dbname = dbname;
     }
     /** @private */
     async run(cmd) {
         const res = await run(`${this.bin} '${this.dbname} ${cmd.replace(/'/g, '.')}'`);
 
-        const payload = res.replace(/^OK|ERR/, '').trim();
+        const ok = res.charAt(0) == 'O';
+        const payload = res.slice(ok ? 3 : 4);
 
-        if (/^ERR/.test(res))
+        if (!ok)
             throw new Error(payload);
 
         if (/^\d+$/.test(payload))
