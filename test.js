@@ -2,8 +2,7 @@ import JunkDB from '.';
 
 const db = new JunkDB('js-wrapper-test');
 
-await db.set(0);
-await db.remove('some-data');
+await db.delete();
 
 const TESTS = [
     await db.get(),

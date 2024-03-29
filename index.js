@@ -21,7 +21,7 @@ export default class JunkDB {
     }
     /** @private */
     async run(cmd) {
-        const res = await run(`${this.bin} '${this.dbname} ${cmd.replace(/'/g, '.')}'`);
+        const res = await run(`${this.bin} '${this.dbname} ${cmd.replace(/'/g, '.')}' --raw`);
 
         const ok = res.charAt(0) == 'O';
         const payload = res.slice(ok ? 3 : 4);
@@ -70,5 +70,11 @@ export default class JunkDB {
      */
     async remove(id) {
         await this.run(`REM ${id}`);
+    }
+    /**
+     * @returns {Promise<void>}
+     */
+    async delete() {
+        await this.run('DEL');
     }
 }
