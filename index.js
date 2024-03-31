@@ -15,7 +15,7 @@ export default class JunkDB {
      * @param {string | number} dbname
      * @param {string | undefined} bin
      */
-    constructor(dbname, bin = '~/.junkdb/junkdb-client') {
+    constructor(dbname, bin = 'junkdb-cli') {
         this.bin = bin;
         this.dbname = dbname;
     }
